@@ -18,7 +18,8 @@
                         @endphp
 
                         <div class="{{ $carouselItemClass }} text-center">
-                            <img style="height: 100vh;" src="{{ asset('storage/photos/' . $trimmedPath) }}" alt="Image {{ $index + 1 }}">
+                            <img style="height: 100vh;" src="{{ asset('storage/photos/' . $trimmedPath) }}"
+                                alt="Image {{ $index + 1 }}">
                         </div>
                     @endforeach
                 @endforeach
@@ -34,6 +35,22 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+        <div class="blocking-overlay2" id="blockingOverlay2"
+            style="
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                ">
+            <button class="btn btn-primary"  style="margin: 20px" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+        </div>
 
         <div style="display: flex; align-items: center; justify-content: center; padding: 20px;">
             <form action="{{ route('photos.process') }}" id="processForm" method="POST">
@@ -46,8 +63,8 @@
                 </label>
             </form>
         </div>
-        
-        
+
+
 
 
 
@@ -61,6 +78,7 @@
         $('#upload').on('click', function() {
             console.log('uploading');
             $('#processForm').submit();
+            $('#blockingOverlay2').fadeIn();
         });
     });
 </script>

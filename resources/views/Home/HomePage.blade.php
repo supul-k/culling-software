@@ -21,10 +21,12 @@
 
                         <p class="fs-1 fw-normal text-light">Cull photos fast with</p>
                         <p class="fs-1 fw-bold text-light">Narrative Select</p>
-                        <p class="card-text text-light">Game-changing image culling – powered by smart tech and designed from the
+                        <p class="card-text text-light">Game-changing image culling – powered by smart tech and designed from
+                            the
                             ground
                             up for professional photographers.</p>
-                        <form action="{{ route('photos.upload') }}" id="uploadForm" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('photos.upload') }}" id="uploadForm" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <label for="upload" class="btn btn-dark bg-light" style="width: 100%; height: 10%;">
                                 <p class="fs-3 fw-bold text-dark"
@@ -34,7 +36,22 @@
                                 <input type="file" id="upload" name="files[]" multiple hidden>
                             </label>
                         </form>
-
+                        <div class="blocking-overlay" id="blockingOverlay1"
+                            style="
+                            display: none;
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: rgba(0, 0, 0, 0.5);
+                            z-index: 9999;
+                            ">
+                            <button class="btn btn-primary" style="margin: 20px" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                        </div>
 
                     </div>
 
@@ -54,6 +71,7 @@
     $(document).ready(function() {
         $('#upload').on('change', function() {
             console.log('uploading');
+            $('#blockingOverlay1').fadeIn();
             $('#uploadForm').submit();
         });
     });
