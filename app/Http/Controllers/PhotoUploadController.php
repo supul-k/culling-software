@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Photo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 use ZipArchive;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,12 +89,17 @@ class PhotoUploadController extends Controller
         }
     }
 
+    // public function downloadForm()
+    // {
+    //     $imageDirectory = storage_path('app\public\ML_Project\good');
+    //     return view('finalPortfolio')->with('imageDirectory', $imageDirectory);
+    // }
+
     public function downloadImages(Request $request)
     {
-        $folderPath = public_path('ML_Project/good');
+        $folderPath = storage_path('app/public/ML_Project/good');
 
         $files = Storage::disk('public')->files('ML_Project/good');
-
         $zip = new \ZipArchive();
         $zipFileName = public_path('images.zip'); // Full path to the ZIP archive
         if ($zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
@@ -101,10 +107,11 @@ class PhotoUploadController extends Controller
             foreach ($files as $file) {
                 // Get the file name from the full path
                 $fileName = basename($file);
+                $folderPath = str_replace("/", "\\", $folderPath);
+                // dd($folderPath . DIRECTORY_SEPARATOR . $fileName);
                 // Add the file to the ZIP archive
-                $zip->addFile($folderPath . DIRECTORY_SEPARATOR . $fileName, $fileName);
+                $zip->addFile($folderPath . DIRECTORY_SEPARATOR . $fileName);
             }
-
             $zip->close();
 
             if (file_exists($zipFileName)) {
@@ -119,4 +126,40 @@ class PhotoUploadController extends Controller
             return redirect()->back()->with('error', 'Failed to create ZIP archive.');
         }
     }
+
+    // public function downloadImages(Request $request)
+    // {
+    //     // $folderPath = public_path('ML_Project/good');
+    //     $folderPath = 'ML_Project\good';
+    //     $files = Storage::disk('public')->files('ML_Project/good');
+    //     foreach ($files as $file) {
+    //         // Get the file name from the full path
+    //         $fileName = basename($file);
+    //         // Set the file path to download
+    //         $filePath = $folderPath . DIRECTORY_SEPARATOR . $fileName;
+    //         // dd($filePath);
+    //         // $filePath = str_replace("/", "\\", $filePath);
+
+    //         // Check if the file exists in the storage
+    //         if (Storage::exists($filePath)) {
+    //             // Create a response to download the image
+    //             $downloadResponse = response()->download(storage_path('app/public/' . $filePath), $fileName)->deleteFileAfterSend();
+    //         } else {
+    //             // If the file does not exist, show an error message or redirect as needed
+    //             return redirect()->back()->with('error', 'Image not found.');
+    //         }
+
+    //         return view('finalPortfolio')->with('downloadedFileName', $fileName);
+    //         // if (Storage::exists($filePath)) {
+    //         //     // Create a response to download the image
+    //         //     $publicUrl = Storage::url($filePath);
+    //         //     return Redirect::to($publicUrl);
+
+    //         //     // return response()->download($filePath, $fileName)->deleteFileAfterSend();
+    //         // } else {
+    //         //     // If the file does not exist, show an error message or redirect as needed
+    //         //     return redirect()->back()->with('error', 'Image not found.');
+    //         // }
+    //     }
+    // }
 }

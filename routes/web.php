@@ -23,3 +23,4 @@ Route::post('/photos/upload', [PhotoUploadController::class, 'upload'])->name('p
 Route::post('/photos/process', [PhotoUploadController::class, 'process'])->name('photos.process');
 
 Route::post('/photos/download', [PhotoUploadController::class, 'downloadImages'])->name('photos.download');
+// Route::get('/photos/downloadForm', [PhotoUploadController::class, 'downloadForm']);

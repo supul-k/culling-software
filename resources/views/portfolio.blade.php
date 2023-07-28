@@ -48,7 +48,7 @@
                 ">
             <button class="btn btn-primary"  style="margin: 20px" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
+                Processing...
             </button>
         </div>
 
